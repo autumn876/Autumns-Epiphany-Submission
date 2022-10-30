@@ -51,23 +51,12 @@ function insane.init ()
     print("initialized")
     enums.player.PLAYER = enums.common.game:GetPlayer(enums.player.PLAYERINDEX)
     enums.player.PLAYER_SPRITE = enums.player.PLAYER:GetSprite()
-    enums.common.startedCounting=false
-    print(enums.badevents.ANXIETY_ATTACK)
-    enums.common.initialized=true
+    functions.reset()
 end
 
 function insane.preleavegame()
     print("uninitialized")
-    enums.EventUtility.RESTORING_VISION=false
-    enums.EventUtility.EVENT_ENDED=false
-    enums.EventUtility.EVENT_INIT=false
-    enums.badevents.ANXIETY_ATTACK=false
-    enums.badevents.BLACKOUT=false
-    enums.shaders.enabled=0
-    enums.shaders.R=0
-    enums.shaders.G=0
-    enums.shaders.B=0
-    enums.common.spam=false
+    functions.reset()
     enums.common.initialized=false
 end
 

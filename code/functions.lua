@@ -63,7 +63,9 @@ function functions.badevents(eventID,playerindex)
                         local enemypos = enemy.Position
                         enemy:Kill()
                         player.Position=enemypos
-                        Isaac.Spawn(EntityType.ENTITY_EFFECT,EffectVariant.CREEP_RED,-1,player.Position,Vector(0,0),player)
+                        for i=0,5 do
+                            Isaac.Spawn(EntityType.ENTITY_EFFECT,EffectVariant.CREEP_RED,-1,player.Position+Vector(i,0),Vector(0,0),player)
+                        end
                     end
                 end
             else 
@@ -83,20 +85,28 @@ function functions.restoreVision(should)
         enums.shaders.R= enums.shaders.R+0.01
         enums.shaders.G=enums.shaders.R
         enums.shaders.B=enums.shaders.R
-        if enums.shaders.R>=0.9 then
-            player.ControlsEnabled=true
+        if enums.shaders.R>=0.6 then
             player:AnimateSad()
-            enums.shaders.enabled=0
-            enums.shaders.R=0
-            enums.shaders.G=0
-            enums.shaders.B=0
-            enums.badevents.BLACKOUT=false
-            enums.EventUtility.EVENT_ENDED=false
-            enums.EventUtility.RESTORING_VISION=false
+            functions.reset()
         end
     end
 end
 
+
+function functions.reset()
+    local player = Game():GetPlayer(0)
+    enums.shaders.enabled=0
+    enums.shaders.R=0
+    enums.shaders.G=0
+    enums.shaders.B=0
+    enums.badevents.ANXIETY_ATTACK=false
+    enums.badevents.BLACKOUT=false
+    enums.EventUtility.EVENT_INIT=false
+    enums.EventUtility.EVENT_ENDED=false
+    enums.EventUtility.RESTORING_VISION=false
+    player.ControlsEnabled=true
+
+end
 function functions.wait(seconds)
     
     

@@ -31,38 +31,71 @@ function functions.badevents(eventID,playerindex)
         end
     end
 
-    if eventID==2 then
-        enums.shaders.enabled=1
-        enums.badevents.BLACKOUT=true
-        if enums.badevents.BLACKOUT then
-        --I hate you xml fuck your entire bloodline
-            if not functions.wait(1000) then
-                if not loop then
-                    loop = true
-                    local enemy = Isaac.FindInRadius(player.Position,1000,EntityPartition.ENEMY)[1]
-                    if enemy == nil then enums.badevents.BLACKOUT=false else 
+    if eventID==2 then       
+        if enums.badevents.BLACKOUT or not enums.EventUtility.EVENT_INIT then
+
+            if not enums.EventUtility.EVENT_INIT then --event init
+                print("event initialized")
+                enums.badevents.BLACKOUT=true
+                enums.EventUtility.EVENT_INIT = true
+                enums.EventUtility.EVENT_ENDED=false
+                enums.EventUtility.RESTORING_VISION=false
+                enums.shaders.enabled=1
+                enums.shaders.R=0
+                enums.shaders.B=0
+                enums.shaders.G=0
+            end
+            
+            if not enums.EventUtility.EVENT_ENDED then
+                enums.shaders.enabled=1
+                local enemies = Isaac.FindInRadius(player.Position,1000,EntityPartition.ENEMY)
+                for i=1,#enemies do 
+                    local enemy = enemies[i]
+                    if #enemies==0 then
+                        print("no enemies")
+                        --enums.shaders.enabled=0 
+                        enums.badevents.BLACKOUT=false 
+                        enums.EventUtility.EVENT_INIT=false 
+                        enums.EventUtility.EVENT_ENDED=true
+                        return
+                    else 
+                        print("enemies")
                         local enemypos = enemy.Position
                         enemy:Kill()
                         player.Position=enemypos
-                        enums.shaders.enabled=0
-                        Isaac.Spawn(EntityType.ENTITY_EFFECT,EffectVariant.BLOOD_GUSH,-1,player.Position,Vector(0,0))
+                        Isaac.Spawn(EntityType.ENTITY_EFFECT,EffectVariant.CREEP_RED,-1,player.Position,Vector(0,0),player)
                     end
                 end
-            else
-                enums.shaders.enabled=1
-                loop = false
+            else 
+                enums.EventUtility.RESTORING_VISION=true
             end
         end
     end
-
     --insanities to be implemented
-
-
-    --phantasm enemies without collision
-
-    --making the player code shaders
+        --phantasm enemies without collision
+        --making the player code shaders
 end
 
+function functions.restoreVision(should)
+    if should then
+        local player = Game():GetPlayer(0)
+        player.ControlsEnabled=false
+        enums.shaders.R= enums.shaders.R+0.01
+        enums.shaders.G=enums.shaders.R
+        enums.shaders.B=enums.shaders.R
+        if enums.shaders.R>=0.9 then
+            player.ControlsEnabled=true
+            player:AnimateSad()
+            enums.shaders.enabled=0
+            enums.shaders.R=0
+            enums.shaders.G=0
+            enums.shaders.B=0
+            enums.badevents.BLACKOUT=false
+            enums.EventUtility.EVENT_ENDED=false
+            enums.EventUtility.RESTORING_VISION=false
+        end
+    end
+end
 
 function functions.wait(seconds)
     

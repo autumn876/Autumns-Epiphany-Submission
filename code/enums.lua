@@ -26,6 +26,12 @@ Enums.badevents = {
     BLACKOUT = false,
     HALUCINATIONS = false
 }
+Enums.EventUtility = {
+    EVENT_INIT = false,
+    EVENT_ENDED = false,
+    RESTORING_VISION=false
+}
+
 Enums.shaders = {
     R = 0,
     G =0,

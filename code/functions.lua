@@ -4,12 +4,13 @@ local start
 local initseconds
 local loop = false
 local rng = RNG()
+
 function functions.badevents(eventID,playerindex)
     local game = Game()
     local player = Game():GetPlayer(playerindex)
     local sprite = player:GetSprite()
     local room = Game():GetRoom()
-    if eventID == 1 then
+    if eventID == 1 then --anxiety attack
         if enums.common.initialized  then
             enums.badevents.ANXIETY_ATTACK=true
             if enums.badevents.ANXIETY_ATTACK then
@@ -31,7 +32,7 @@ function functions.badevents(eventID,playerindex)
         end
     end
 
-    if eventID==2 then       
+    if eventID==2 then       --blackouts
         if enums.badevents.BLACKOUT or not enums.EventUtility.EVENT_INIT then
 
             if not enums.EventUtility.EVENT_INIT then --event init
@@ -73,9 +74,33 @@ function functions.badevents(eventID,playerindex)
             end
         end
     end
-    --insanities to be implemented
+    --insanities 
+        --75 TODO
+        --60                                  anxiety
+        --45 TODO  halucinations
+        --25 TODO
+        --15                                 blackout
+        --10 TODO 
+        --5  TODO be very scary
+        --1  TODO break the 4th wall
+        --0  TODO kill?
         --phantasm enemies without collision
-        --making the player code shaders
+        --
+        -- negative 50 sanity: making the player code shaders
+
+    --lowering sanity
+        --hit 
+        --mantle break as losts
+        --minmaxing (taking too long on a stage)
+        -- 1 every 10 seconds
+        -- 5 every 10 if you take too long on the stage (see minmaxing)
+        --low quality items trollface
+        --bombing beggars (do this now Autumn)
+    --raising sanity
+        --beating bosses
+        --healing (MAKE EXTRA SURE TO NERF)
+        --quality 3+ items
+        --beggars paying out
 end
 
 function functions.restoreVision(should)
@@ -95,6 +120,7 @@ end
 
 function functions.reset()
     local player = Game():GetPlayer(0)
+    print("resetting")
     enums.shaders.enabled=0
     enums.shaders.R=0
     enums.shaders.G=0
@@ -105,7 +131,8 @@ function functions.reset()
     enums.EventUtility.EVENT_ENDED=false
     enums.EventUtility.RESTORING_VISION=false
     player.ControlsEnabled=true
-
+    enums.common.startedCounting=false
+    print('reset')
 end
 function functions.wait(seconds)
     

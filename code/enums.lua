@@ -1,7 +1,8 @@
 local Enums = {}
 
 Enums.states = {
-    SANITY = 100
+    SANITY = 100,
+    MinMaxing=false
 }
 
 

@@ -74,6 +74,20 @@ function functions.badevents(eventID,playerindex)
             end
         end
     end
+    
+    if eventID==3 then
+        if not enums.EventUtility.EVENT_INIT then
+            enums.badevents.HALUCINATIONS=true
+            Isaac.Spawn(EntityType.ENTITY_GAPER,1,0,room:GetCenterPos(),Vector(0,0),player)
+            enums.EventUtility.DISCOVERED_HALUCINATION=false
+            enums.EventUtility.EVENT_INIT=true
+        else 
+            if functions.wait(10)then 
+                enums.EventUtility.DISCOVERED_HALUCINATION=true
+            end
+        end
+
+    end
     --insanities 
         --75 TODO
         --60                                  anxiety

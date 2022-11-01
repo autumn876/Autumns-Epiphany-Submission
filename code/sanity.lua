@@ -25,7 +25,9 @@ function insane.main ()
         functions.badevents(2,0)
         else print("no enemies sadge") enums.EventUtility.RESTORING_VISION=true end
     end
-    
+    if Input.IsButtonPressed(Keyboard.KEY_3,0) or enums.badevents.HALUCINATIONS then 
+        functions.badevents(3,0)
+    end
 end
 
 
@@ -54,10 +56,13 @@ function insane.checkInsanity()
                                     end
                                 end
                             end
-                            if not room:IsClear() and rng:RandomInt(6000)==1 then
+                            if not room:IsClear() and chosenseed<100 then
                                 enums.badevents.BLACKOUT=true
                             end
                         end
+                    end
+                    if chosenseed<100 then
+                        functions.badevents(3,0)
                     end
                 end
                 if chosenseed<500 then 
@@ -71,13 +76,26 @@ function insane.checkInsanity()
 
         end
     else
-        print("event initialized, skipping applying affects")
+        --print("event initialized, skipping applying affects")
         if enums.states.SANITY<1 then
-        player:Die()
+            player:Die()
         end
     end
 end
 
+function insane.phantasm(player,collider,low)
+    --local player2 = player:ToPlayer()
+
+    if enums.badevents.HALUCINATIONS then 
+        
+        low:ToNPC()
+        print(low.Type)
+        if low.Type~=10 then return end
+        if low.EntityCollisionClass == EntityCollisionClass.ENTCOLL_PLAYERONLY and enums.EventUtility.DISCOVERED_HALUCINATION then low:Kill()end
+        
+        low.EntityCollisionClass = EntityCollisionClass.ENTCOLL_PLAYERONLY
+    end
+end
 
 function insane.lowerSanityOverTime()
     if functions.wait(10000) then
@@ -120,6 +138,18 @@ function insane.QOLPostPEEfectUpdate()
     if not enums.badevents.ANXIETY_ATTACK then player.ControlsEnabled=true end
     if not enums.badevents.BLACKOUT and not enums.EventUtility.RESTORING_VISION then 
         enums.shaders.enabled=0
+    end
+    if enums.badevents.HALUCINATIONS then
+        if #Isaac.FindByType(EntityType.ENTITY_GAPER)~= 0 then
+            for _,entity in pairs(Isaac.FindByType(EntityType.ENTITY_GAPER)) do
+                entity.CollisionDamage=0
+            end
+        end
+    end
+    for _, entity in pairs(Isaac.FindByType(EntityType.ENTITY_GUSHER))do
+        if entity.EntityCollisionClass==EntityCollisionClass.ENTCOLL_PLAYERONLY then
+            entity:Kill()
+        end
     end
 end
 

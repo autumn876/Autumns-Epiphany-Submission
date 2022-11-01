@@ -30,7 +30,8 @@ Enums.badevents = {
 Enums.EventUtility = {
     EVENT_INIT = false,
     EVENT_ENDED = false,
-    RESTORING_VISION=false
+    RESTORING_VISION=false,
+    DISCOVERED_HALUCINATION = false
 }
 
 Enums.shaders = {

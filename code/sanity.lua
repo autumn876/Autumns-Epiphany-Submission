@@ -56,8 +56,8 @@ function insane.checkInsanity()
                                     end
                                 end
                             end
-                            if not room:IsClear() and chosenseed<100 then
-                                enums.badevents.BLACKOUT=true
+                            if not room:IsClear() and chosenseed<500 then
+                                functions.badevents(2,0)
                             end
                         end
                     end
@@ -65,8 +65,8 @@ function insane.checkInsanity()
                         functions.badevents(3,0)
                     end
                 end
-                if chosenseed<500 then 
-                    print("Ah! anxiety attack!")
+                if chosenseed<50 then 
+                    --print("Ah! anxiety attack!")
                     enums.badevents.ANXIETY_ATTACK=true
                     functions.badevents(1,0)
                     return
@@ -122,6 +122,7 @@ function insane.miscLowering()
         for _, ent in pairs(tokill) do
             if ent.Type==EntityType.ENTITY_SLOT then
                 enums.states.SANITY= enums.states.SANITY-10
+                ent:Kill()
             end
         end
 

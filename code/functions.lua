@@ -2,8 +2,11 @@ local functions = {}
 local enums = require("code.enums")
 local start
 local initseconds
+local initseconds2
 local loop = false
 local rng = RNG()
+local start2
+
 
 function functions.badevents(eventID,playerindex)
     local game = Game()
@@ -82,7 +85,7 @@ function functions.badevents(eventID,playerindex)
             enums.EventUtility.DISCOVERED_HALUCINATION=false
             enums.EventUtility.EVENT_INIT=true
         else 
-            if functions.wait(10)then 
+            if functions.wait2(1000)then 
                 enums.EventUtility.DISCOVERED_HALUCINATION=true
             end
         end
@@ -131,6 +134,9 @@ function functions.restoreVision(should)
     end
 end
 
+function functions.DontkillPlayer()
+    enums.states.SANITY=100
+end
 
 function functions.reset()
     local player = Game():GetPlayer(0)
@@ -141,6 +147,7 @@ function functions.reset()
     enums.shaders.B=0
     enums.badevents.ANXIETY_ATTACK=false
     enums.badevents.BLACKOUT=false
+    enums.badevents.HALUCINATIONS=false
     enums.EventUtility.EVENT_INIT=false
     enums.EventUtility.EVENT_ENDED=false
     enums.EventUtility.RESTORING_VISION=false
@@ -169,10 +176,31 @@ function functions.wait(seconds)
     end
 end
 
+function functions.wait2(seconds2) --cue dj khaled *another one*
+    --too lazy to program in priority/multi level counting I could probably do that with an object, but idrk
+    --
+    
+    if not enums.common.startedCounting2 then
+        enums.common.startedCounting2=true
+        start2 = Isaac.GetTime()
+        initseconds2=seconds2
+    end
+    if enums.common.startedCounting2 then
+        if start2 == nil then start2 = Isaac.GetTime() end
+        if initseconds2== nil then initseconds=seconds2 end
+        
+        --print(Isaac.GetTime(),"is the current time",start,"is the initial timestamp",initseconds,"is the amount of time we're waiting")
+        if tonumber (Isaac.GetTime()) > (start2 + initseconds2) then
+            --print("waited the time")
+            enums.common.startedCounting2=false
+            return true
+        end
+    end
+end
 function functions.consoledebug(cmd)
     local string = tostring(string.lower(cmd))
     if string == "killsanity" then
-        enums.states.SANITY=0
+        enums.states.SANITY=10
     end
     if string == "restoresanity" then 
         enums.states.SANITY=100

@@ -11,6 +11,7 @@ Enums.common = {
     initialized = false,
     spam = false,
     startedCounting = false,
+    startedCounting2 = false,
     reset = false
 }
 
